@@ -104,6 +104,11 @@ core({ // global config
             }
 
         }
+    },
+    logger: {
+        isRequired: true,
+        dir: './logs/',
+        newFileEvery: 5 // 5 = friday
     }
 
 })

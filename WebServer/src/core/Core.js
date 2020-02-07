@@ -2,12 +2,12 @@ const cluster = require('cluster')
 
 
 
-const Thread = require('./Thread');
-
+const Thread = require('./Thread')
+const Logger = require('./Logger')
 
 module.exports = async (options) => {
 
-    if (options.constructor != ({}).constructor) {
+    if (options.constructor !== ({}).constructor) {
         throw new Error('server without options can\'t work ')
     }
 
@@ -17,17 +17,17 @@ module.exports = async (options) => {
 
     if (cluster.isMaster && thread.isRequired) {
         thread.init()
-    }
-    else
-    {
+    } else {
         global.SYS = {}
-
         SYS.ROOTPATH = process.cwd()
-        SYS.isDebug = (typeof options.isDebug == 'boolean') ? options.isDebug : false
-        SYS.TimeZone = (typeof options.TimeZone == 'string') ? options.TimeZone : 'Asia/Riyadh'
+        SYS.isDebug = (typeof options.isDebug === 'boolean') ? options.isDebug : false
+        SYS.TimeZone = (typeof options.TimeZone === 'string') ? options.TimeZone : 'Asia/Riyadh'
+
+        const logger = new Logger(options)
 
 
-        /*SYS.mariadb = new Mariadb()
+
+        /* SYS.mariadb = new Mariadb()
         await SYS.mariadb.init()
         SYS.mariadb.start()
         await (async () => {
@@ -38,7 +38,7 @@ module.exports = async (options) => {
         })()
 
 
-        SYS.restify = new Restify()*/
+        SYS.restify = new Restify() */
 
 
 
