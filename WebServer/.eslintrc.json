@@ -24,7 +24,7 @@
         "padded-blocks":0,
         "no-tabs":0,
         "curly":0,
-        "indent": ["error", "tab", {
+        "indent": ["error", 4, {
             "SwitchCase": 1,
             "VariableDeclarator": 1,
             "outerIIFEBody": 1,
