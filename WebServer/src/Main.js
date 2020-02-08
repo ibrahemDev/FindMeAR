@@ -68,7 +68,8 @@ Date.createDateTimeZone = (timeZone) => {
 
 
 
-
+const fs = require('fs')
+const path = require('path')
 const core = require('./core/Core')
 
 
@@ -77,7 +78,7 @@ core({ // global config
     TimeZone: 'Asia/Riyadh',
 
     cluster: {
-        isRequired: true,
+        isRequired: false,
         cpus: 2
     },
     webserver: {

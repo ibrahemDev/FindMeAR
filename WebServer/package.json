@@ -17,7 +17,10 @@
     "eslint-plugin-standard": "^4.0.1"
   },
   "dependencies": {
+    "morgan": "^1.9.1",
     "restify": "^8.5.1",
+    "ua-parser-js": "^0.7.21",
+    "uuid": "^3.4.0",
     "winston": "^3.2.1"
   }
 }

@@ -24,6 +24,7 @@
         "padded-blocks":0,
         "no-tabs":0,
         "curly":0,
+        "node/no-deprecated-api":0,
         "indent": ["error", 4, {
             "SwitchCase": 1,
             "VariableDeclarator": 1,

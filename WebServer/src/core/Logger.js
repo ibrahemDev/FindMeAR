@@ -3,7 +3,6 @@ const { combine, timestamp, printf } = format
 const path = require('path')
 
 class Logger {
-
     constructor (options) {
 
         if (options.logger && options.logger.constructor === ({}).constructor) {
