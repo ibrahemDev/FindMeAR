@@ -72,6 +72,14 @@ const fs = require('fs')
 const path = require('path')
 const core = require('./core/Core')
 
+process.on('uncaughtException', function (err) {
+    // console.log(typeof err)
+    // console.log( err.stack)
+    console.log(err.name)
+    // console.log( err.message)
+    //  console.log( err.constructor)
+    // console.log('Caught exception: ' + err)
+})
 
 core({ // global config
     isDebug: true,
@@ -110,6 +118,20 @@ core({ // global config
         isRequired: true,
         dir: './logs/',
         newFileEvery: 5 // 5 = friday
+    },
+    Mariadb: {
+        db_host: '127.0.0.1',
+        db_name: 'find_me_ar', // + Math.floor(Math.random() * 100000000000000), // 'find_me_ar', //
+        db_user: 'root',
+        db_pass: '',
+        db_pool: {
+            max: 5,
+            min: 0,
+            acquire: 30000,
+            idle: 10000
+        },
+        logging: false,
+        db_timezone: 'Etc/GMT+0' // do not change this
     }
 
 })

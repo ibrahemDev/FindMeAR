@@ -168,14 +168,21 @@ class RestifyWebServer {
 
 
 
-    start () {
-        if (this.httpsServer != null)
-            this.httpsServer.listen(this.port, (e) => {
-                console.log('The host : 127.0.0.1:' + this.port)
-            })
+    async start () {
+        return new Promise((resolve) => {
+            if (this.httpsServer != null)
+                this.httpsServer.listen(this.port, (e) => {
+                    console.log('The host : 127.0.0.1:' + this.port)
 
-        if (this.httpServer != null)
-            this.httpServer.listen(this.HttpToHttps.port || 80)
+                    if (this.httpServer != null)
+                        this.httpServer.listen(this.HttpToHttps.port || 80, () => {
+                            resolve()
+                        })
+                    else
+                        resolve()
+
+                })
+        })
     }
 
 
