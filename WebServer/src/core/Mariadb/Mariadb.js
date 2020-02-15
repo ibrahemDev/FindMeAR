@@ -10,7 +10,7 @@ const RoleUser = require('./models/role_user')
 const Emergency = require('./models/Emergency')
 const LocationInArea = require('./models/LocationInArea')
 const Area = require('./models/Area')
-
+const PhoneCode = require('./models/PhoneCode')
 
 
 // const SessionOptions = require('./models/SessionOptions')
@@ -105,6 +105,7 @@ class Mariadb {
 
 
 
+
             this.models.set('Users', Users(this.sequelize, Sequelize))
             this.models.set('Session', _Session(this.sequelize, Sequelize))
             this.models.set('RoleUser', RoleUser(this.sequelize, Sequelize))
@@ -112,6 +113,10 @@ class Mariadb {
             this.models.set('Emergency', Emergency(this.sequelize, Sequelize))
             this.models.set('Area', Area(this.sequelize, Sequelize))
             this.models.set('LocationInArea', LocationInArea(this.sequelize, Sequelize))
+
+            // session better :/
+            // this.models.set('PhoneCode', PhoneCode(this.sequelize, Sequelize))
+
 
 
 
@@ -176,6 +181,7 @@ class Mariadb {
                         this.sequelize.sync({ force: false })
                         console.log('Successful create tables & relations')
                         this.isSequelizeSync = true
+                        console.log(1111111111111111111111111)
                         resolve()
 
                     }

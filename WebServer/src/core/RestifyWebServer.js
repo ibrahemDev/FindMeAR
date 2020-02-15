@@ -3,11 +3,29 @@ const restify = require('restify')
 const http = require('http')
 const uuidv4 = require('uuid/v4')
 const uaParser = require('ua-parser-js') // user-agent parser
+const bodyParser = require('body-parser')
+const session = require('express-session')
+
+
+const OptimizeUrl = require('../app/middlewares/OptimizeUrl')
+const MariadbConnectionTest = require('../app/middlewares/MariadbConnectionTest')
+
+const SequelizeStore = require('../app/middlewares/session-sequelize/SessionSequelize')(session.Store)
+
 
 
 class RestifyWebServer {
     constructor (options) {
         const self = this
+        this.middlewares = {
+            OptimizeUrl,
+            MariadbConnectionTest,
+            SequelizeStore,
+
+            session,
+            bodyParser
+        }
+        this.routes = null
         if (!(options.webserver && options.webserver.constructor === ({}).constructor)) {
 
             options.webserver = {}
@@ -41,9 +59,10 @@ class RestifyWebServer {
         if (options.webserver.ssl.key && options.webserver.ssl.cert && this.httpVersion === '2.0')
             serverOpt.http2 = {
                 key: options.webserver.ssl.key,
-                cert: options.webserver.ssl.cert
+                cert: options.webserver.ssl.cert,
+                allowHTTP1: true
             }
-        else if (options.webserver.ssl.key && options.webserver.ssl.cert && this.httpVersion === '2.0')
+        else if (options.webserver.ssl.key && options.webserver.ssl.cert && this.httpVersion === '1.1')
             serverOpt.https = {
                 key: options.webserver.ssl.key,
                 cert: options.webserver.ssl.cert
@@ -73,7 +92,7 @@ class RestifyWebServer {
         if (SYS.logger.isRequired) {
 
             this.httpsServer.use(require('morgan')((tokens, req, res) => {
-                console.log('://')
+
                 return [
                     '[' + req._id + '] :',
                     '<' + req._ip,
@@ -105,10 +124,6 @@ class RestifyWebServer {
 
         }))
 
-        this.httpsServer.get('*', this._pageNotFound.bind(this))
-
-
-        this.httpsServer.get('/api/*', this._apiNotFound.bind(this))
 
         if (this.HttpToHttps.isRequired) {
             this.httpServer = http.createServer((req, res) => {
@@ -139,29 +154,7 @@ class RestifyWebServer {
     }
 
 
-    _apiNotFound (req, res, next) {
-        return this.apiNotFound(req, res, next)
-    }
 
-    apiNotFound (req, res, next) {
-        res.send({
-            status: 'failed',
-            message: 'Route Not Found',
-            code: 'ROUTE_NOT_FOUND'
-        })
-    }
-
-
-
-
-    _pageNotFound (req, res, next) {
-        return this.pageNotFound(req, res, next)
-    }
-
-    pageNotFound (req, res, next) {
-        res.send('<h1>page Not Found</h1>')
-        // next()
-    }
 
 
 

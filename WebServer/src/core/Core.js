@@ -2,11 +2,17 @@ const cluster = require('cluster')
 
 
 
+const Routes = require('../app/routes/Routes')
+
 const Thread = require('./Thread')
 const Logger = require('./Logger')
 const RestifyWebServer = require('./RestifyWebServer')
 const Mariadb = require('./Mariadb/Mariadb')
 
+
+/**
+ *
+ */
 module.exports = async (options) => {
 
     if (options.constructor !== ({}).constructor) {
@@ -34,6 +40,8 @@ module.exports = async (options) => {
         SYS.restifyWebServer = new RestifyWebServer(options)
 
 
+        SYS.restifyWebServer.routes = new Routes()
+
 
         await SYS.mariadb.init()
 
@@ -43,6 +51,7 @@ module.exports = async (options) => {
 
         // SYS.restifyWebServer.init() // TODO async/await
 
+        // loading route before start webserver
 
 
         await SYS.restifyWebServer.start()
@@ -54,23 +63,50 @@ module.exports = async (options) => {
 
 
 
+        if (SYS.mariadb.isSequelizeSync && SYS.mariadb.isDatabaseCreated) {
+
+            // wait 1 sec if not wait we have problem :(
+            setTimeout(async () => {
+                const arr = ['admin', 'injured', 'paramedic']
+                for (let i = 0; i < arr.length; i++) {
+                    const val = arr[i]
+                    const [user, created] = await SYS.mariadb.models.get('Roles').findOrCreate({
+                        where: { role: val },
+                        defaults: {
+                            role: val,
+                            description: '',
+                            is_active: true
+
+                        }
+                    })
+                }
+
+            }, 1000)
 
 
 
 
 
-        /*
-        await SYS.mariadb.init()
-        SYS.mariadb.start()
-        await (async () => {
-            await SequelizeStore.createProcedureGet(false)
-            await SequelizeStore.createProcedureSet(false)
-            await SequelizeStore.createEventRemoveAllExpiredSession(false)
-
-        })()
+            const SequelizeStore = SYS.restifyWebServer.middlewares.SequelizeStore
 
 
-        SYS.restify = new Restify() */
+            SYS.sequelizeStore = new SequelizeStore({
+                db: SYS.mariadb.sequelize,
+                timezone: 'Asia/Riyadh',
+                expiration: 1000 * 60 * 60 * 24 * 30 // 5 days The maximum age (in milliseconds) of a valid session. Used when cookie.expires is not set.
+
+            })
+
+
+
+            SequelizeStore.createProcedureGet(true)
+            SequelizeStore.createProcedureSet(true)
+            SequelizeStore.createEventRemoveAllExpiredSession()
+
+        }
+
+
+
 
 
 

@@ -67,15 +67,17 @@ Date.createDateTimeZone = (timeZone) => {
 
 
 
-
 const fs = require('fs')
 const path = require('path')
 const core = require('./core/Core')
 
-process.on('uncaughtException', function (err) {
+
+
+
+process.on('uncaughtException', function (/* err */) {
     // console.log(typeof err)
     // console.log( err.stack)
-    console.log(err.name)
+    // console.log(err.name)
     // console.log( err.message)
     //  console.log( err.constructor)
     // console.log('Caught exception: ' + err)
@@ -92,7 +94,7 @@ core({ // global config
     webserver: {
         host: '127.0.0.1',
         port: 3000,
-        trustProxy: true,
+        trustProxy: false,
         httpVersion: '2.0', // http = 1.0 https=1.1 https/2 = 2.0
         ssl: { // if using https or https/2
 
@@ -104,7 +106,7 @@ core({ // global config
             })
         },
         HttpToHttps: {
-            isRequired: true,
+            isRequired: false,
             http: {
                 port: 8081
             },

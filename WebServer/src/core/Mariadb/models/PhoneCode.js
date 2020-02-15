@@ -1,9 +1,13 @@
 
 
 
+
+
+
+
 module.exports = (sequelize, type) => {
 
-    const Users = sequelize.define('users', {
+    const PhoneCode = sequelize.define('phone_code', {
         id: {
             type: type.BIGINT.UNSIGNED,
             primaryKey: true,
@@ -11,47 +15,29 @@ module.exports = (sequelize, type) => {
             comment: '',
             field: 'id'
         },
-        device_id: {
-            type: type.STRING(255),
-            allowNull: true,
-            unique: true,
-            defaultValue: null,
-            field: 'device_id'
-        },
-        phone_number: {
-            type: type.INTEGER,
-            allowNull: true,
-            unique: true,
-            defaultValue: null,
-            field: 'phone_number'
-        },
-        full_name: {
-            type: type.STRING(60),
-            allowNull: true,
-            defaultValue: null,
-            field: 'full_name'
-        },
-        is_busy: {
-            type: type.BOOLEAN,
+        user_id: {
+            type: type.BIGINT.UNSIGNED,
             allowNull: false,
-            defaultValue: false,
-            field: 'is_busy'
+            field: 'user_id',
+            references: { // n:n
+                model: 'users',
+                key: 'id'
+            }
         },
-        last_update: {
+        code: {
+            type: type.INTEGER.UNSIGNED,
+            allowNull: false
+        },
+        expires: {
             type: type.DATE,
-            defaultValue: type.NOW,
-            field: 'last_update'
+            allowNull: false
         },
         createdAt: {
             type: type.DATE,
             defaultValue: type.NOW,
             field: 'createdAt'
-        },
-        deletedAt: {
-            type: type.DATE,
-            defaultValue: '0000-00-00 00:00:00',
-            field: 'deletedAt'
         }
+
 
     }, {
         timestamps: false,
@@ -64,7 +50,7 @@ module.exports = (sequelize, type) => {
 
 
 
-    Users.associate = (models) => {
+    PhoneCode.associate = (models) => {
         // let _Roles = models.get('Roles');
         // let _User = models.get('User');
 
@@ -90,7 +76,7 @@ module.exports = (sequelize, type) => {
     }
     // console.log(User.associate)
 
-    return Users
+    return PhoneCode
 
     /*
 News.sync({force: false}).then(function (err) { if(err) { console.log('An error occur while creating table'); } else{ console.log('Item table created successfully'); } });

@@ -18,7 +18,7 @@ module.exports = (sequelize, type) => {
                 key: 'id'
             }
         },
-        roule_id: {
+        role_id: {
             type: type.INTEGER.UNSIGNED,
             allowNull: true,
             field: 'roule_id',
