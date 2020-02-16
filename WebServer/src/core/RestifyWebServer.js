@@ -5,7 +5,7 @@ const uuidv4 = require('uuid/v4')
 const uaParser = require('ua-parser-js') // user-agent parser
 const bodyParser = require('body-parser')
 const session = require('express-session')
-
+const formidable = require('formidable')
 
 const OptimizeUrl = require('../app/middlewares/OptimizeUrl')
 const MariadbConnectionTest = require('../app/middlewares/MariadbConnectionTest')
@@ -17,7 +17,23 @@ const SequelizeStore = require('../app/middlewares/session-sequelize/SessionSequ
 class RestifyWebServer {
     constructor (options) {
         const self = this
+
+        this.SequelizeStore = SequelizeStore
+        this.sessionStore = new SequelizeStore({
+            db: SYS.mariadb.sequelize,
+            timezone: 'Asia/Riyadh',
+            expiration: 1000 * 60 * 60 * 24 * 30 // 5 days The maximum age (in milliseconds) of a valid session. Used when cookie.expires is not set.
+
+        })
         this.middlewares = {
+
+        }
+
+
+        this.initMiddlewares()
+
+
+        this.middlewaress = {
             OptimizeUrl,
             MariadbConnectionTest,
             SequelizeStore,
@@ -158,7 +174,135 @@ class RestifyWebServer {
 
 
 
+    initMiddlewares () {
+        const self = this
 
+
+
+
+
+
+
+
+
+        this.middlewares.OptimizeUrlFn = OptimizeUrl({
+            type: 'add', // add slash last url
+            statusCode: 301, // this for redirect
+            skip: false, //
+            methods: 'get,head,post', // work with this methods
+            beforeRedirect: () => {
+                // log
+            }
+        })
+        this.middlewares.OptimizeUrl = (opt) => {
+            if (opt) {
+                return OptimizeUrl(opt)
+
+            } else {
+                return this.middlewares.OptimizeUrlFn
+            }
+        }
+        this.middlewares.MariadbConnectionTestFn = MariadbConnectionTest({
+            onDisconnection: (req, res, next, err) => {
+
+                res.send({
+                    status: 'failed',
+                    message: 'Connection to Database'
+                })
+            }
+        })
+
+        this.middlewares.MariadbConnectionTest = (opt) => {
+            if (opt) {
+                return MariadbConnectionTest(opt)
+            } else {
+                return this.middlewares.MariadbConnectionTestFn
+            }
+        }
+
+        this.middlewares.sessionFn = session({
+            secret: 'keyboard cat',
+            name: 'sess',
+            resave: true,
+            saveUninitialized: true,
+            cookie: {
+                secure: true,
+                expires: new Date(Date.createDateTimeZone('Asia/Riyadh').getTime() + 1000 * 60 * 60 * 24 * 5)
+            },
+
+            store: self.sessionStore
+
+        })
+        this.middlewares.sessionFn1 = (req, res, next) => {
+
+            (this.sessionStore) ? this.middlewares.sessionFn(req, res, next) : res.send({
+                status: 'failed',
+                message: 'session not working'
+            })
+        }
+
+        this.middlewares.session = (opt) => {
+            if (opt) {
+                return (req, res, next) => {
+                    (this.sessionStore) ? SYS.restifyWebServer.middlewares.session(opt)(req, res, next) : res.send({
+                        status: 'failed',
+                        message: 'session not working'
+                    })
+                }
+            } else
+                return this.middlewares.sessionFn1
+        }
+
+
+
+        const form = formidable({ multiples: false })
+        this.middlewares.formidableFn = (req, res, next) => {
+
+
+            form.parse(req, (err, fields, files) => {
+                if (err) {
+                    next(err)
+
+                } else {
+                    req.body = { fields, files }
+                    next()
+                }
+
+            })
+
+
+        }
+        this.middlewares.formidable = (opt) => {
+            if (opt) {
+                const form = formidable(opt)
+                return (req, res, next) => {
+
+
+                    form.parse(req, (err, fields, files) => {
+                        if (err) {
+                            next(err)
+
+                        } else {
+                            req.body = { fields, files }
+                            next()
+                        }
+
+                    })
+
+
+                }
+            } else {
+                return this.middlewares.formidableFn
+            }
+        }
+
+
+
+
+
+
+
+    }
 
 
     async start () {

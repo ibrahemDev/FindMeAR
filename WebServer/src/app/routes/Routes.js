@@ -1,6 +1,12 @@
 // SYS.restifyWebServer
 const InjuredAccess = require('./injured/InjuredAccess')
 const PhoneCode = require('./PhoneCode')
+const CreateEmergencie = require('./injured/CreateEmergencie')
+
+
+
+const EditEmergencie = require('./injured/EditEmergencie')
+// const GetEmergencies = require('./CreateEmergencie') TODO
 
 
 class Routes {
@@ -10,7 +16,7 @@ class Routes {
 
 
         SYS.restifyWebServer.httpsServer.get('*', [
-            /* SYS.restifyWebServer.middlewares.OptimizeUrl({
+            SYS.restifyWebServer.middlewares.OptimizeUrl({
                 type: 'add', // add slash last url
                 statusCode: 301, // this for redirect
                 skip: false, //
@@ -19,31 +25,32 @@ class Routes {
                     // log
                 }
             }),
-            SYS.restifyWebServer.middlewares.MariadbConnectionTest({
-                onDisconnection: (req, res, next, err) => {
-                    res.header('Content-Type', 'text/html')
-                    res.end('<h1>Failed Connection to Database</h1>')
-                    /* res.send({
-                        status: 'failed',
-                        message: 'Connection to Database'
-                    }) * /
-                }
-            }), */
             this._pageNotFound.bind(this)
         ])
 
 
-        SYS.restifyWebServer.httpsServer.get('/api/*', this._apiNotFound.bind(this))
+        SYS.restifyWebServer.httpsServer.get('/api/*', SYS.restifyWebServer.middlewares.OptimizeUrl({
+            type: 'add', // add slash last url
+            statusCode: 301, // this for redirect
+            skip: false, //
+            methods: 'get,head', // work with this methods
+            beforeRedirect: () => {
+                // log
+            }
+        }), this._apiNotFound.bind(this))
 
-
+        // injured routes
         this.injuredAccess = new InjuredAccess()
+        this.createEmergencie = new CreateEmergencie()
+        this.editEmergencie = new EditEmergencie()
+        //this.editEmergencie = new EditEmergencie()
+        // admin routes
+
+
+        // .....
+
+        // common routes
         this.phoneCode = new PhoneCode()
-
-
-
-
-
-
     }
 
     _apiNotFound (req, res, next) {

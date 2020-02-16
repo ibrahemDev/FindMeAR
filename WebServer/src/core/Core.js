@@ -37,13 +37,14 @@ module.exports = async (options) => {
 
 
         SYS.mariadb = new Mariadb(options)
+        await SYS.mariadb.init()
         SYS.restifyWebServer = new RestifyWebServer(options)
 
 
         SYS.restifyWebServer.routes = new Routes()
 
 
-        await SYS.mariadb.init()
+
 
 
 
@@ -59,7 +60,6 @@ module.exports = async (options) => {
 
 
         await SYS.mariadb.start(0) // miliscand if 0 will loop and stop after connected
-
 
 
 
@@ -87,21 +87,21 @@ module.exports = async (options) => {
 
 
 
-            const SequelizeStore = SYS.restifyWebServer.middlewares.SequelizeStore
-
-
-            SYS.sequelizeStore = new SequelizeStore({
-                db: SYS.mariadb.sequelize,
-                timezone: 'Asia/Riyadh',
-                expiration: 1000 * 60 * 60 * 24 * 30 // 5 days The maximum age (in milliseconds) of a valid session. Used when cookie.expires is not set.
-
-            })
 
 
 
-            SequelizeStore.createProcedureGet(true)
-            SequelizeStore.createProcedureSet(true)
-            SequelizeStore.createEventRemoveAllExpiredSession()
+
+
+
+
+            SYS.restifyWebServer.SequelizeStore.createProcedureGet(true)
+            SYS.restifyWebServer.SequelizeStore.createProcedureSet(true)
+            SYS.restifyWebServer.SequelizeStore.createEventRemoveAllExpiredSession()
+
+
+
+
+
 
         }
 

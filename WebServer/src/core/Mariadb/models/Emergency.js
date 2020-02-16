@@ -61,6 +61,12 @@ module.exports = (sequelize, type) => {
             field: 'status_msg'
 
 
+        },
+        is_static: {
+            type: type.BOOLEAN,
+            allowNull: false,
+            defaultValue: false,
+            field: 'is_static'
         }
 
 
