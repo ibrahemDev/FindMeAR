@@ -6,7 +6,7 @@ const CreateEmergencie = require('./injured/CreateEmergencie')
 
 
 const EditEmergencie = require('./injured/EditEmergencie')
-// const GetEmergencies = require('./CreateEmergencie') TODO
+const GetEmergencies = require('./injured/GetEmergencies')
 
 
 class Routes {
@@ -43,6 +43,7 @@ class Routes {
         this.injuredAccess = new InjuredAccess()
         this.createEmergencie = new CreateEmergencie()
         this.editEmergencie = new EditEmergencie()
+        this.getEmergencies = new GetEmergencies()
         //this.editEmergencie = new EditEmergencie()
         // admin routes
 
