@@ -22,7 +22,18 @@ class InjuredAccess {
             SYS.restifyWebServer.middlewares.MariadbConnectionTest(),
             SYS.restifyWebServer.middlewares.session(),
             SYS.restifyWebServer.middlewares.formidable(),
-            // SYS.restifyWebServer.middlewares.bodyParser.urlencoded({ extended: false }),
+            // check is login or not
+            (req, res, next) => {
+                if (req.session.db && req.session.db.user_id && typeof req.session.db.role_id === 'number') {
+                    res.send({
+                        status: 'failed',
+                        msg: 'Already Access Logout and then you can access',
+                        code: 'ALREADY_ACCESS'
+                    })
+                } else {
+                    next()
+                }
+            },
             this._post.bind(self)
         ])
 
@@ -181,80 +192,74 @@ class InjuredAccess {
     async _post (req, res, next) {
 
 
-        if (req.session && req.session.db && typeof req.session.db.user_id === 'number') {
+
+        const validate = this.joiParseErrors(this.JoiObject, req.body.fields)
+
+        if (validate != null) {
+            const arr = []
+            validate.forEach((item) => {
+                var cache = {
+
+                    lable: item.context.label,
+                    msg: item.message,
+                    code: item.type
+
+                }
+                arr.push(cache)
+            })
+
+
             res.send({
                 status: 'failed',
-                msg: 'Already Access',
-                code: 'ALREADY_ACCESS'
+                msg: 'form error',
+                code: 'FORM_ERROR',
+                form: arr
+
             })
         } else {
-            const validate = this.joiParseErrors(this.JoiObject, req.body.fields)
-
-            if (validate != null) {
-                const arr = []
-                validate.forEach((item) => {
-                    var cache = {
-
-                        lable: item.context.label,
-                        msg: item.message,
-                        code: item.type
-
-                    }
-                    arr.push(cache)
-                })
 
 
-                res.send({
-                    status: 'failed',
-                    msg: 'form error',
-                    code: 'FORM_ERROR',
-                    form: arr
-
-                })
-            } else {
+            if (req.body.fields.device_id) {
+                const access = await this.accessByDeviceId(req, req.body.fields.device_id)
 
 
-                if (req.body.fields.device_id) {
-                    const access = await this.accessByDeviceId(req, req.body.fields.device_id)
-
-
-                    if (access.isAccess) {
-                        res.send({
-                            status: 'ok',
-                            msg: 'successful access'
-                        })
-                    } else {
-                        res.send({
-                            status: 'ok',
-                            msg: 'wait phone code'
-                        })
-                    }
-                } else if (req.body.fields.phone_number) {
-
-                    const access = await this.accessByPhoneNumber(req, req.body.fields.phone_number)
-
+                if (access.isAccess) {
+                    res.send({
+                        status: 'ok',
+                        msg: 'successful access'
+                    })
+                } else {
                     res.send({
                         status: 'ok',
                         msg: 'wait phone code'
                     })
-                } else {
-                    res.send({
-                        status: 'failed',
-                        errors: {
-                            unkonw: {
-                                msg: 'unknow',
-                                code: 'UNKNOW'
-                            }
-                        }
-                    })
                 }
+            } else if (req.body.fields.phone_number) {
 
+                const access = await this.accessByPhoneNumber(req, req.body.fields.phone_number)
 
+                res.send({
+                    status: 'ok',
+                    msg: 'wait phone code'
+                })
+            } else {
+                res.send({
+                    status: 'failed',
+                    errors: {
+                        unkonw: {
+                            msg: 'unknow',
+                            code: 'UNKNOW'
+                        }
+                    }
+                })
             }
 
 
-
         }
+
+
+
+
 
         // console.log(req.session)
 

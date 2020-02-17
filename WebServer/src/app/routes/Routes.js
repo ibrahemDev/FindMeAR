@@ -1,12 +1,34 @@
 // SYS.restifyWebServer
+
+
+
 const InjuredAccess = require('./injured/InjuredAccess')
-const PhoneCode = require('./PhoneCode')
 const CreateEmergencie = require('./injured/CreateEmergencie')
-
-
-
 const EditEmergencie = require('./injured/EditEmergencie')
 const GetEmergencies = require('./injured/GetEmergencies')
+
+
+const AdminAccess = require('./admin/AdminAccess')
+const GetAllUsers = require('./admin/GetAllUsers')
+const GetUserById = require('./admin/GetUserById')
+const AdminGetAllEmergencies = require('./admin/AdminGetAllEmergencies')
+const AdminGetEmergencieById = require('./admin/AdminGetEmergencieById')
+
+const AdminAddUserRole = require('./admin/AdminAddUserRole')
+// const AdminDelUserRole
+// const AdminUpdateUserRole
+
+
+
+
+
+const PhoneCode = require('./PhoneCode')
+
+
+
+
+
+
 
 
 class Routes {
@@ -44,10 +66,14 @@ class Routes {
         this.createEmergencie = new CreateEmergencie()
         this.editEmergencie = new EditEmergencie()
         this.getEmergencies = new GetEmergencies()
-        //this.editEmergencie = new EditEmergencie()
+
         // admin routes
-
-
+        this.adminAccess = new AdminAccess()
+        this.getAllUsers = new GetAllUsers()
+        this.getUserById = new GetUserById()
+        this.adminGetAllEmergencies = new AdminGetAllEmergencies()
+        this.adminGetEmergencieById = new AdminGetEmergencieById()
+        this.adminAddUserRole = new AdminAddUserRole()
         // .....
 
         // common routes

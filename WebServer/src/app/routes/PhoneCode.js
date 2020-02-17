@@ -66,6 +66,7 @@ class PhoneCode {
     }
 
     async _post (req, res, next) {
+        console.dir(req.session)
         const now = Date.createDateTimeZone('Asia/Riyadh')
         if (req.session.checkPhoneCode && (req.session.checkPhoneCode.expires - now.getTime()) > 0) {
             if (req.body.fields.phone_code)
@@ -80,11 +81,23 @@ class PhoneCode {
                     req.session.db.role_id = req.session.checkPhoneCode.role_id
 
                     req.session.checkPhoneCode = undefined
-                    res.send({
+                    console.dir(req.session)
+
+
+
+                    res.header('Content-Type', 'application/json')
+                    res.end(JSON.stringify({
                         status: 'ok',
                         msg: 'successful access',
                         code: 'SUCCESSFUL_ACCESS'
-                    })
+                    }))
+
+
+                    /* res.send({
+                        status: 'ok',
+                        msg: 'successful access',
+                        code: 'SUCCESSFUL_ACCESS'
+                    }) */
 
 
 

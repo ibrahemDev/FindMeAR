@@ -83,6 +83,13 @@ module.exports = (sequelize, type) => {
 
     Emergency.associate = (models) => {
 
+
+        let Users = models.get('Users')
+        let Emergency = models.get('Emergency')
+
+
+        Emergency.belongsTo(Users, { foreignKey: 'user_id', as: 'injured' })
+        Emergency.belongsTo(Users, { foreignKey: 'employee_id', as: 'paramedic'})
     }
     // console.log(User.associate)
 

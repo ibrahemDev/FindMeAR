@@ -106,10 +106,10 @@ proc_label:BEGIN
 			select `user_id`,`data`,`expires`,`last_activity`,`created_at` into g_user_id, g_data, g_expires, g_lastActivity, g_createdAt from `sessions` where `sid` = in_sid ;
 
 			if(g_data = in_data) then
-				UPDATE `sessions` SET `user_id` = IF(in_user_id IS NOT NULL AND `user_id` IS NULL , in_user_id, `user_id`), `role_id`= IF(in_role_id IS NOT NULL AND `role_id` IS NULL , in_user_id, `role_id`), `last_activity`= in_now WHERE `sid` = in_sid;
+				UPDATE `sessions` SET `user_id` = IF(in_user_id IS NOT NULL AND `user_id` IS NULL , in_user_id, `user_id`), `role_id`= IF(in_role_id IS NOT NULL AND `role_id` IS NULL , in_role_id, `role_id`), `last_activity`= in_now WHERE `sid` = in_sid;
 				COMMIT;
 			else
-				UPDATE `sessions` SET `user_id` = IF(in_user_id IS NOT NULL AND `user_id` IS NULL , in_user_id, `user_id`), `role_id`= IF(in_role_id IS NOT NULL AND `role_id` IS NULL , in_user_id, `role_id`),  `data` = in_data, `last_activity`= in_now WHERE `sid` = in_sid;# in_user_id
+				UPDATE `sessions` SET `user_id` = IF(in_user_id IS NOT NULL AND `user_id` IS NULL , in_user_id, `user_id`), `role_id`= IF(in_role_id IS NOT NULL AND `role_id` IS NULL , in_role_id, `role_id`),  `data` = in_data, `last_activity`= in_now WHERE `sid` = in_sid;# in_user_id
 				COMMIT;
 			end if;
 

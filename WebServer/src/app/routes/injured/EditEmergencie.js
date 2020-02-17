@@ -16,6 +16,18 @@ class EditEmergencie {
             SYS.restifyWebServer.middlewares.OptimizeUrl(),
             SYS.restifyWebServer.middlewares.MariadbConnectionTest(),
             SYS.restifyWebServer.middlewares.session(),
+            (req, res, next) => {
+                if (req.session.db && req.session.db.user_id && req.session.db.role_id === 2) {
+                    next()
+                } else {
+                    res.send({
+                        status: 'failed',
+                        msg: 'Already Access Logout and then you can access',
+                        code: 'ALREADY_ACCESS'
+                    })
+
+                }
+            },
             SYS.restifyWebServer.middlewares.formidable(),
             this._post.bind(self)
         ])
@@ -58,87 +70,80 @@ class EditEmergencie {
     async _post (req, res, next) {
 
 
-        if (req.session.db && req.session.db.user_id && req.session.db.role_id === 2) {
 
 
-            const validate = this.joiParseErrors(this.JoiObject, req.body.fields)
 
-            if (validate != null) {
-                const arr = []
-                validate.forEach((item) => {
+        const validate = this.joiParseErrors(this.JoiObject, req.body.fields)
 
-                    var cache = {
+        if (validate != null) {
+            const arr = []
+            validate.forEach((item) => {
 
-                        ...item.context,
-                        msg: item.message,
-                        code: item.type
+                var cache = {
 
-                    }
-                    arr.push(cache)
+                    ...item.context,
+                    msg: item.message,
+                    code: item.type
+
+                }
+                arr.push(cache)
+            })
+
+
+            res.send({
+                status: 'failed',
+                msg: 'form error',
+                code: 'FORM_ERROR',
+                form: arr
+
+            })
+        } else {
+            const jsonUpdate = {}
+
+            for (var key in req.body.fields) {
+
+                if (key !== 'id')
+                    jsonUpdate[key] = req.body.fields[key]
+            }
+
+
+            const emergency = await SYS.mariadb.models.get('Emergency').update(jsonUpdate, {
+                where: {
+                    id: req.body.fields.id,
+                    user_id: req.session.db.user_id
+
+                }
+            })
+
+
+
+            if (emergency[0] === 1) {
+                res.send({
+                    status: 'ok',
+                    msg: 'emergencie updated'
                 })
 
-
+            } else {
                 res.send({
                     status: 'failed',
-                    msg: 'form error',
-                    code: 'FORM_ERROR',
-                    form: arr
-
+                    msg: 'emergencie not found to update' // database error
                 })
-            } else {
-                const jsonUpdate = {}
-
-                for (var key in req.body.fields) {
-
-                    if (key !== 'id')
-                        jsonUpdate[key] = req.body.fields[key]
-                }
-
-
-                const emergency = await SYS.mariadb.models.get('Emergency').update(jsonUpdate, {
-                    where: {
-                        id: req.body.fields.id,
-                        user_id: req.session.db.user_id
-
-                    }
-                })
-
-
-
-                if (emergency[0] === 1) {
-                    res.send({
-                        status: 'ok',
-                        msg: 'emergencie updated'
-                    })
-
-                } else {
-                    res.send({
-                        status: 'failed',
-                        msg: 'emergencie not found to update' // database error
-                    })
-                }
-
-
-
-
             }
 
 
 
 
-
-
-
-
-
-
-        } else {
-            res.send({
-                status: 'failed',
-                message: 'Route Not Found',
-                code: 'ROUTE_NOT_FOUND'
-            })
         }
+
+
+
+
+
+
+
+
+
+
 
 
     }

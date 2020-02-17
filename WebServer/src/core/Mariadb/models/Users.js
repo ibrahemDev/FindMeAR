@@ -59,41 +59,18 @@ module.exports = (sequelize, type) => {
     })
 
 
-    // QSYS.db.models.
+
 
 
 
 
     Users.associate = (models) => {
-        // let _Roles = models.get('Roles');
-        // let _User = models.get('User');
 
-        // this.models.users.belongsToMany(this.models.roles, { through: "role_user" })
-
-
-        /* _User.belongsToMany(_Roles, {
-            through: "role_user" ,
-
-            //foreignKey : 'role',
-            //sourceKey: 'role'
-        }) */
-
-        /* _User.hasMany(_Roles, {
-            foreignKey : 'id',
-            sourceKey: 'role_id',
-
-        }); */
-        /* User.hasMany(models.Task, {
-            foreignKey : 'id',
-            sourceKey: 'taskId'
-        }); */
     }
-    // console.log(User.associate)
+
 
     return Users
 
-    /*
-News.sync({force: false}).then(function (err) { if(err) { console.log('An error occur while creating table'); } else{ console.log('Item table created successfully'); } });
-*/
+
 
 }

@@ -29,13 +29,7 @@ module.exports = (sequelize, type) => {
 
 
     RoleUser.associate = (models) => {
-        const _Roles = models.get('Roles')
-        const _User = models.get('User')
 
-        /* _Roles.belongsTo(_User, {
-            foreignKey : 'role_id',
-            targetKey: 'id'
-        }); */
     }
 
 

@@ -18,7 +18,7 @@ class GetEmergencies {
                     next()
                 } else {
                     res.send({
-                        status: 'faileddddddd',
+                        status: 'failed',
                         message: 'Route Not Found',
                         code: 'ROUTE_NOT_FOUND'
                     })
