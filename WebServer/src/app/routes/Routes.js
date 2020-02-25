@@ -2,22 +2,38 @@
 
 
 
+// todo
+/**
+ * employee_lat
+employee_long
+ *
+ *
+ */
+
+
+
+
+// injured
 const InjuredAccess = require('./injured/InjuredAccess')
 const CreateEmergencie = require('./injured/CreateEmergencie')
 const EditEmergencie = require('./injured/EditEmergencie')
 const GetEmergencies = require('./injured/GetEmergencies')
 
-
+// admin
 const AdminAccess = require('./admin/AdminAccess')
 const GetAllUsers = require('./admin/GetAllUsers')
 const GetUserById = require('./admin/GetUserById')
 const AdminGetAllEmergencies = require('./admin/AdminGetAllEmergencies')
 const AdminGetEmergencieById = require('./admin/AdminGetEmergencieById')
-
 const AdminAddUserRole = require('./admin/AdminAddUserRole')
-// const AdminDelUserRole
-// const AdminUpdateUserRole
+const AdminDelUserRole = require('./admin/AdminDelUserRole')
 
+// paramedic
+
+const ParamedicGetEmergencieInfo = require('./paramedic/ParamedicGetEmergencieInfo')
+// readEmergencieInformation
+// update stutse and location
+// checkEmergencie
 
 
 
@@ -74,7 +90,9 @@ class Routes {
         this.adminGetAllEmergencies = new AdminGetAllEmergencies()
         this.adminGetEmergencieById = new AdminGetEmergencieById()
         this.adminAddUserRole = new AdminAddUserRole()
+        this.adminDelUserRole = new AdminDelUserRole()
         // .....
+        this.paramedicGetEmergencieInfo = new ParamedicGetEmergencieInfo()
 
         // common routes
         this.phoneCode = new PhoneCode()

@@ -173,7 +173,7 @@ class AdminAccess {
 
 
             const access = await this.accessByPhoneNumber(req, req.body.fields.phone_number)
-            console.dir(req.session)
+
             if (access.isAdmin && access.phoneCode) {
                 res.send({
                     status: 'ok',

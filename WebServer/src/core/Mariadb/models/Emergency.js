@@ -67,6 +67,11 @@ module.exports = (sequelize, type) => {
             allowNull: false,
             defaultValue: false,
             field: 'is_static'
+        },
+        createdAt: {
+            type: type.DATE,
+            defaultValue: type.NOW,
+            field: 'createdAt'
         }
 
 
@@ -84,12 +89,12 @@ module.exports = (sequelize, type) => {
     Emergency.associate = (models) => {
 
 
-        let Users = models.get('Users')
-        let Emergency = models.get('Emergency')
+        const Users = models.get('Users')
+        const Emergency = models.get('Emergency')
 
 
         Emergency.belongsTo(Users, { foreignKey: 'user_id', as: 'injured' })
-        Emergency.belongsTo(Users, { foreignKey: 'employee_id', as: 'paramedic'})
+        Emergency.belongsTo(Users, { foreignKey: 'employee_id', as: 'paramedic' })
     }
     // console.log(User.associate)
 

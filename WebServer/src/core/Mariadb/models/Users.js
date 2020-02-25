@@ -37,6 +37,16 @@ module.exports = (sequelize, type) => {
             defaultValue: false,
             field: 'is_busy'
         },
+        lat: {
+            type: type.DOUBLE,
+            allowNull: true,
+            field: 'lat'
+        },
+        long: {
+            type: type.DOUBLE,
+            allowNull: true,
+            field: 'long'
+        },
         last_update: {
             type: type.DATE,
             defaultValue: type.NOW,

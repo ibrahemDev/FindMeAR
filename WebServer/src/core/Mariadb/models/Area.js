@@ -21,17 +21,22 @@ module.exports = (sequelize, type) => {
             allowNull: false,
             field: 'long'
         },
-
-        last_insert: {
-            type: type.DATE,
-            defaultValue: type.NOW,
-            field: 'createdAt'
-        },
         every: {
             type: type.INTEGER, // per hour
             allowNull: false
 
+        },
+        start_date: {
+            type: type.DATE,
+            defaultValue: type.NOW,
+            field: 'start_date'
+        },
+        end_date: {
+            type: type.DATE,
+            defaultValue: type.NOW,
+            field: 'createdAt'
         }
+
 
 
 

@@ -43,11 +43,11 @@ module.exports = (sequelize, type) => {
 
     RoleUser.associate = (models) => {
 
-        let Users = models.get('Users')
-        let Roles = models.get('Roles')
+        const Users = models.get('Users')
+        const Roles = models.get('Roles')
 
-        Users.belongsToMany(Roles, { through: 'role_user' });
-        Roles.belongsToMany(Users, { through: 'role_user' });
+        Users.belongsToMany(Roles, { through: 'role_user' })
+        Roles.belongsToMany(Users, { through: 'role_user' })
 
     }
 
