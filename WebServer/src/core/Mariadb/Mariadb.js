@@ -2,6 +2,8 @@ const Sequelize = require('sequelize')
 const decamelize = require('decamelize')
 const mariadb = require('mariadb/callback')
 
+const fs = require('fs')
+const path = require('path')
 
 const Users = require('./models/users')
 const _Session = require('./models/session')
@@ -206,6 +208,46 @@ class Mariadb {
             initDatabaseAndTabels(5000)
         })
     }
+
+
+
+    async inistallManyProcedures () {
+        // drop if exists for debug
+        // this section for ai
+
+        await this.sequelize.query('drop PROCEDURE if exists aiEmergenciesFetchEmergenciesPerTimeRange', { raw: true })
+        await this.sequelize.query('drop PROCEDURE if exists aiEmergenciesCalculateDistance_BTWN_EmergsAndAreas', { raw: true })
+        await this.sequelize.query('drop PROCEDURE if exists aiEmergenciesCountEmergenciesPerRangeSelectArea', { raw: true })
+        await this.sequelize.query('drop PROCEDURE if exists aiEmergenciesCountEmergenciesPerRange', { raw: true })
+        await this.sequelize.query('drop PROCEDURE if exists generateEmergenciesData', { raw: true })
+        await this.sequelize.query('drop PROCEDURE if exists rndomLocation', { raw: true })
+
+        await this.sequelize.query('drop PROCEDURE if exists measureLatLon', { raw: true })
+        await this.sequelize.query('drop PROCEDURE if exists getBestParamedicForEmergencie', { raw: true })
+        await this.sequelize.query('drop PROCEDURE if exists GetAllParamedicsOnlineAndResponeParamedicToEmergencie', { raw: true })
+
+
+        await this.sequelize.query('drop EVENT if exists responeAllParamedicsToAllEmergencies', { raw: true })
+
+
+        const sql = fs.readFileSync(path.join(__dirname + '../../../data/sql/install_all.sql'), {
+            encoding: 'utf8'
+        })
+        const sqlSplit = sql.split('/***********************************************************************************####****************************************************************************************/')
+        const listFeedBack = []
+        for (var i = 1; i < sqlSplit.length - 1; i++) {
+            let c = await this.sequelize.query(sqlSplit[i])
+            listFeedBack.push(c)
+        }
+
+        // const r = await this.sequelize.query(sql)
+
+        return listFeedBack
+
+
+    }
+
+
 }
 
 

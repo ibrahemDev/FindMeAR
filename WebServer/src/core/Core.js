@@ -98,6 +98,12 @@ module.exports = async (options) => {
             SYS.restifyWebServer.SequelizeStore.createProcedureSet(true)
             SYS.restifyWebServer.SequelizeStore.createEventRemoveAllExpiredSession()
 
+            await SYS.mariadb.inistallManyProcedures()
+
+
+
+
+
 
 
 

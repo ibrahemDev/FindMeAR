@@ -23,7 +23,7 @@ module.exports = (sequelize, type) => {
         },
         every: {
             type: type.INTEGER, // per hour
-            allowNull: false
+            allowNull: true
 
         },
         start_date: {
@@ -35,6 +35,12 @@ module.exports = (sequelize, type) => {
             type: type.DATE,
             defaultValue: type.NOW,
             field: 'createdAt'
+        },
+        count: {
+            type: type.INTEGER,
+            allowNull: true,
+            defaultValue: null
+
         }
 
 

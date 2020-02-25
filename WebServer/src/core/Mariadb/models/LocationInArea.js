@@ -11,25 +11,23 @@ module.exports = (sequelize, type) => {
             comment: '',
             field: 'id'
         },
-        /* emergency_id: {
+        emergency_id: {
             type: type.BIGINT.UNSIGNED,
-            //allowNull: true,
-            //unique: false, // :/
+            unique: false,
             references: {
                 model: 'emergency',
                 key: 'id'
             },
             field: 'emergency_id'
         },
-         area_id: {
+        area_id: {
             type: type.BIGINT.UNSIGNED,
-            allowNull: true,
-            unique: false, // :/
+            unique: false,
             references: {
                 model: 'area',
                 key: 'id'
             }
-        }, */
+        },
 
         distance: {
             type: type.DOUBLE, // per cm
