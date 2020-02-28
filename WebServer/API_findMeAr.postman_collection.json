@@ -1,0 +1,817 @@
+{
+	"info": {
+		"_postman_id": "cedebac9-fdf7-4d64-8e13-b69f49cf4ef7",
+		"name": "findMeAr2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "paramedic",
+			"item": [
+				{
+					"name": "update emergency",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "status_msg",
+									"value": "asdsdaswwwa",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://127.0.0.1:3000/api/emergency/1/",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"emergency",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get emergencie by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://127.0.0.1:3000/api/emergency/1/?attr=id,long&inc=injured",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"emergency",
+								"1",
+								""
+							],
+							"query": [
+								{
+									"key": "attr",
+									"value": "id,long"
+								},
+								{
+									"key": "inc",
+									"value": "injured"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get emergencie",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://127.0.0.1:3000/api/emergency/?status=1&inc=injured",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"emergency",
+								""
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "1"
+								},
+								{
+									"key": "attr",
+									"value": "id,long",
+									"disabled": true
+								},
+								{
+									"key": "inc",
+									"value": "injured"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all emergencie",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://127.0.0.1:3000/api/emergencies/?inc=injured",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"emergencies",
+								""
+							],
+							"query": [
+								{
+									"key": "inc",
+									"value": "injured"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get account info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://127.0.0.1:3000/api/account/",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"account",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update account",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "phone_number",
+									"value": "526985565",
+									"type": "text"
+								},
+								{
+									"key": "full_name",
+									"value": "sdasdsasdsd",
+									"type": "text"
+								},
+								{
+									"key": "lat",
+									"value": "28.566865",
+									"type": "text"
+								},
+								{
+									"key": "long",
+									"value": "59.664646",
+									"type": "text"
+								},
+								{
+									"key": "is_busy",
+									"value": "false",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://127.0.0.1:3000/api/account/",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"account",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "get emergencie by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://127.0.0.1:3000/api/emergency/1/?attr=id,long&inc=injured",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"emergency",
+								"1",
+								""
+							],
+							"query": [
+								{
+									"key": "attr",
+									"value": "id,long"
+								},
+								{
+									"key": "inc",
+									"value": "injured"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all emergencie",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://127.0.0.1:3000/api/emergencies/?status=1&inc=injured",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"emergencies",
+								""
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "1"
+								},
+								{
+									"key": "inc",
+									"value": "injured"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get account info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://127.0.0.1:3000/api/account/",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"account",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update account",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "device_id",
+									"value": "jdkdkdkdkdkdkdkdkdkdkdkdkdkdkdk",
+									"type": "text"
+								},
+								{
+									"key": "phone_number",
+									"value": "526985565",
+									"type": "text"
+								},
+								{
+									"key": "full_name",
+									"value": "sdasdsasdsd",
+									"type": "text"
+								},
+								{
+									"key": "lat",
+									"value": "28.566865",
+									"type": "text"
+								},
+								{
+									"key": "long",
+									"value": "59.664646",
+									"type": "text"
+								},
+								{
+									"key": "is_busy",
+									"value": "false",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://127.0.0.1:3000/api/account/",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"account",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "injured",
+			"item": [
+				{
+					"name": "emergency update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "6",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "title",
+									"value": "Hellooooooo :)",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "5555asdasda5",
+									"type": "text"
+								},
+								{
+									"key": "lat",
+									"value": "0.1",
+									"type": "text"
+								},
+								{
+									"key": "long",
+									"value": "0.6846516516515",
+									"type": "text"
+								},
+								{
+									"key": "is_static",
+									"value": "true",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://127.0.0.1:3000/api/emergency/2/",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"emergency",
+								"2",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "5",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create emergency",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "65s6ads",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "sadasdasd",
+									"type": "text"
+								},
+								{
+									"key": "lat",
+									"value": "565.255",
+									"type": "text"
+								},
+								{
+									"key": "long",
+									"value": "5.66",
+									"type": "text"
+								},
+								{
+									"key": "is_static",
+									"value": "false",
+									"type": "text"
+								},
+								{
+									"key": "sssssss",
+									"value": "wwwwwww",
+									"type": "text",
+									"disabled": true
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://127.0.0.1:3000/api/emergency/",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"emergency",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get emergencie by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://127.0.0.1:3000/api/emergency/1/?attr=id,long&inc=injured",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"emergency",
+								"1",
+								""
+							],
+							"query": [
+								{
+									"key": "attr",
+									"value": "id,long"
+								},
+								{
+									"key": "inc",
+									"value": "injured"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all emergencie",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://127.0.0.1:3000/api/emergencies/?status=1&inc=injured",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"emergencies",
+								""
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "1"
+								},
+								{
+									"key": "inc",
+									"value": "injured"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get account info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://127.0.0.1:3000/api/account/",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"account",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update account",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "phone_number",
+									"value": "526985565",
+									"type": "text"
+								},
+								{
+									"key": "full_name",
+									"value": "sdasdsasdsd",
+									"type": "text"
+								},
+								{
+									"key": "lat",
+									"value": "28.566865",
+									"type": "text"
+								},
+								{
+									"key": "long",
+									"value": "59.664646",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://127.0.0.1:3000/api/account/",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"account",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "guest",
+			"item": [
+				{
+					"name": "access",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "device_id",
+									"value": "jfolropfjdivogkfmvjgitopfldock",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "phone_number",
+									"value": "506589568",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "admin",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://127.0.0.1:3000/api/access/",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"access",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "phone code",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "phone_code",
+									"value": "423441",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://127.0.0.1:3000/api/phone_code/",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"phone_code",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "phone code",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://127.0.0.1:3000/api/phone_code/",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"phone_code",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "isAccess",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://127.0.0.1:3000/api/isAccess/",
+					"protocol": "https",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"isAccess",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -12,7 +12,7 @@ class CreateEmergencie {
         const self = this
 
 
-        SYS.restifyWebServer.httpsServer.post('/api/injured/emergencie/create/', [
+        SYS.restifyWebServer.httpsServer.post('/api/injured/emergencie/', [
             SYS.restifyWebServer.middlewares.OptimizeUrl(),
             SYS.restifyWebServer.middlewares.MariadbConnectionTest(),
             SYS.restifyWebServer.middlewares.session(),

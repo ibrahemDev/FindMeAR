@@ -12,7 +12,7 @@ class EditEmergencie {
         const self = this
 
 
-        SYS.restifyWebServer.httpsServer.post('/api/injured/emergencie/edit/', [
+        SYS.restifyWebServer.httpsServer.put('/api/injured/emergencie/:id/', [
             SYS.restifyWebServer.middlewares.OptimizeUrl(),
             SYS.restifyWebServer.middlewares.MariadbConnectionTest(),
             SYS.restifyWebServer.middlewares.session(),
@@ -34,13 +34,18 @@ class EditEmergencie {
 
 
         this.JoiObject = Joi.object({
-            id: Joi.number().id().required().label('id'),
+            // id: Joi.number().id().required().label('id'),
             title: Joi.string().empty().min(0).max(255).label('Title'),
             description: Joi.string().empty().min(0).max(1000).label('Description'),
             lat: Joi.number().label('Lat'),
             long: Joi.number().label('Long'),
             is_static: Joi.boolean().label('is Static')
         }).min(2).label('Form')
+
+
+        this.JoiObjectParams = Joi.object({
+            id: Joi.number().required().positive().label('id')
+        }).label('Form')
     }
 
 
@@ -69,6 +74,14 @@ class EditEmergencie {
 
     async _post (req, res, next) {
 
+        const v = this.JoiObjectParams.validate(req.params, { abortEarly: false })
+        if (v.error != null) {
+            res.send({
+                status: 'failed',
+                msg: 'id error'
+            })
+            return
+        }
 
 
 
@@ -109,7 +122,7 @@ class EditEmergencie {
 
             const emergency = await SYS.mariadb.models.get('Emergency').update(jsonUpdate, {
                 where: {
-                    id: req.body.fields.id,
+                    id: req.params.id,
                     user_id: req.session.db.user_id
 
                 }

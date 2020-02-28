@@ -7,7 +7,7 @@ class GetEmergencies {
         const self = this
 
 
-        SYS.restifyWebServer.httpsServer.get('/api/injured/getAllEmergencies/', [
+        SYS.restifyWebServer.httpsServer.get('/api/injured/emergencies/', [
             SYS.restifyWebServer.middlewares.OptimizeUrl(),
             SYS.restifyWebServer.middlewares.MariadbConnectionTest(),
             SYS.restifyWebServer.middlewares.session(),
@@ -28,7 +28,7 @@ class GetEmergencies {
         ])
 
 
-        SYS.restifyWebServer.httpsServer.get('/api/injured/getEmergencieById/:id/', [
+        SYS.restifyWebServer.httpsServer.get('/api/injured/emergencie/:id/', [
             SYS.restifyWebServer.middlewares.OptimizeUrl(),
             SYS.restifyWebServer.middlewares.MariadbConnectionTest(),
             SYS.restifyWebServer.middlewares.session(),
@@ -102,14 +102,14 @@ class GetEmergencies {
             res.send({
                 status: 'ok',
                 msg: 'Emergency List Ready',
-                emergencies: emergenciesFinal
+                emergencies: emergenciesFinal[0]
 
             })
         } else {
             res.send({
                 status: 'ok',
                 msg: 'Not Found Any Emergency',
-                emergencies: emergenciesFinal
+                emergencie: emergenciesFinal
 
             })
         }

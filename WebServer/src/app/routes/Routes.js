@@ -10,7 +10,7 @@ employee_long
  *
  */
 
-
+const contents = require('../../contents')
 
 
 // injured
@@ -31,6 +31,8 @@ const AdminDelUserRole = require('./admin/AdminDelUserRole')
 // paramedic
 
 const ParamedicGetEmergencieInfo = require('./paramedic/ParamedicGetEmergencieInfo')
+const ParamedicUpdateEmergencie = require('./paramedic/ParamedicUpdateEmergencie')
+
 // readEmergencieInformation
 // update stutse and location
 // checkEmergencie
@@ -38,8 +40,11 @@ const ParamedicGetEmergencieInfo = require('./paramedic/ParamedicGetEmergencieIn
 
 
 
-const PhoneCode = require('./PhoneCode')
-
+// const PhoneCode = require('./PhoneCode')
+const Emergencie = require('./api/Emergencie_.js')
+const Access = require('./api/Access_')
+const PhoneCode = require('./api/PhoneCode_')
+const Account = require('./api/Account_')
 
 
 
@@ -65,6 +70,107 @@ class Routes {
             }),
             this._pageNotFound.bind(this)
         ])
+        this.emergencie = new Emergencie()
+
+
+        // https://127.0.0.1:3000/api/emergencie/1/
+        SYS.restifyWebServer.httpsServer.get('/api/emergency/:id/', [
+            ...this.emergencie.middlewares('get', [
+                contents.PERMISSIONS.ADMIN,
+                contents.PERMISSIONS.INJURED,
+                contents.PERMISSIONS.PARAMEDIC
+            ]),
+            this.emergencie.getById.bind(this.emergencie)
+        ])
+        SYS.restifyWebServer.httpsServer.get('/api/emergency/', [
+            ...this.emergencie.middlewares('get', [
+                contents.PERMISSIONS.PARAMEDIC
+            ]),
+            this.emergencie.get.bind(this.emergencie)
+        ])
+        SYS.restifyWebServer.httpsServer.get('/api/emergencies/', [
+            ...this.emergencie.middlewares('get', [
+                contents.PERMISSIONS.INJURED,
+                contents.PERMISSIONS.PARAMEDIC,
+                contents.PERMISSIONS.ADMIN
+            ]),
+            this.emergencie.getAll.bind(this.emergencie)
+        ])
+
+        SYS.restifyWebServer.httpsServer.post('/api/emergency/', [
+            ...this.emergencie.middlewares('post', [
+                contents.PERMISSIONS.INJURED
+            ]),
+            this.emergencie.post.bind(this.emergencie)
+        ])
+
+        SYS.restifyWebServer.httpsServer.put('/api/emergency/:id/', [
+            ...this.emergencie.middlewares('post', [
+                contents.PERMISSIONS.INJURED,
+                contents.PERMISSIONS.PARAMEDIC
+            ]),
+            this.emergencie.putById.bind(this.emergencie)
+        ])
+
+
+        this.access = new Access()
+
+
+
+
+        SYS.restifyWebServer.httpsServer.post('/api/access/', [
+            ...this.access.middlewares('post', [
+                contents.PERMISSIONS.GUEST
+
+            ]),
+            this.access.post.bind(this.access)
+        ])
+        SYS.restifyWebServer.httpsServer.get('/api/isAccess/', [
+            ...this.access.middlewares('get', [
+                contents.PERMISSIONS.GUEST,
+                contents.PERMISSIONS.INJURED,
+                contents.PERMISSIONS.PARAMEDIC,
+                contents.PERMISSIONS.ADMIN
+
+            ]),
+            this.access.getIsAccess.bind(this.access)
+        ])
+
+
+        this.phoneCode = new PhoneCode()
+        SYS.restifyWebServer.httpsServer.post('/api/phone_code/', [
+            ...this.phoneCode.middlewares([
+                contents.PERMISSIONS.GUEST
+            ]),
+            this.phoneCode.post.bind(this.phoneCode)
+        ])
+
+
+        SYS.restifyWebServer.httpsServer.get('/api/phone_code/', this.phoneCode.get([
+            contents.PERMISSIONS.GUEST
+        ]))
+
+
+        this.account = new Account()
+        SYS.restifyWebServer.httpsServer.get('/api/account/', [
+            ...this.account.middlewares('get', [
+                contents.PERMISSIONS.INJURED,
+                contents.PERMISSIONS.PARAMEDIC,
+                contents.PERMISSIONS.ADMIN
+
+            ]),
+            this.account.get.bind(this.account)
+        ])
+
+        SYS.restifyWebServer.httpsServer.put('/api/account/', [
+            ...this.account.middlewares('put', [
+                contents.PERMISSIONS.INJURED,
+                contents.PERMISSIONS.PARAMEDIC,
+                contents.PERMISSIONS.ADMIN
+
+            ]),
+            this.account.putSelf.bind(this.account)
+        ])
 
 
         SYS.restifyWebServer.httpsServer.get('/api/*', SYS.restifyWebServer.middlewares.OptimizeUrl({
@@ -76,6 +182,10 @@ class Routes {
                 // log
             }
         }), this._apiNotFound.bind(this))
+
+
+
+
 
         // injured routes
         this.injuredAccess = new InjuredAccess()
@@ -93,9 +203,18 @@ class Routes {
         this.adminDelUserRole = new AdminDelUserRole()
         // .....
         this.paramedicGetEmergencieInfo = new ParamedicGetEmergencieInfo()
+        this.paramedicUpdateEmergencie = new ParamedicUpdateEmergencie()
 
-        // common routes
-        this.phoneCode = new PhoneCode()
+
+        SYS.restifyWebServer.httpsServer.put('/api/paramedic/emergencie/:id/', [
+            ...this.paramedicUpdateEmergencie.middlewares,
+            this.paramedicUpdateEmergencie.put.bind(this.paramedicUpdateEmergencie)
+        ])
+
+
+
+
+
     }
 
     _apiNotFound (req, res, next) {

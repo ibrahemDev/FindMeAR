@@ -74,7 +74,8 @@ const core = require('./core/Core')
 
 
 
-process.on('uncaughtException', function (/* err */) {
+process.on('uncaughtException', function (err) {
+    console.log(err)
     // console.log(typeof err)
     // console.log( err.stack)
     // console.log(err.name)

@@ -21,7 +21,7 @@ class ParamedicGetEmergencieInfo {
 
 
 
-        SYS.restifyWebServer.httpsServer.get('/api/paramedic/emergencie/info/', [
+        SYS.restifyWebServer.httpsServer.get('/api/paramedic/emergencie/auto/', [
             SYS.restifyWebServer.middlewares.OptimizeUrl(),
             SYS.restifyWebServer.middlewares.MariadbConnectionTest(),
             SYS.restifyWebServer.middlewares.session(),
