@@ -16,5 +16,27 @@
   "bugs": {
     "url": "https://github.com/ibrahemDev/FindMeAR/issues"
   },
-  "homepage": "https://github.com/ibrahemDev/FindMeAR#readme"
+  "homepage": "https://github.com/ibrahemDev/FindMeAR#readme",
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1"
+  },
+  "dependencies": {
+    "@hapi/joi": "^17.1.0",
+    "body-parser": "^1.19.0",
+    "decamelize": "^4.0.0",
+    "express-session": "^1.17.0",
+    "formidable": "^1.2.1",
+    "mariadb": "^2.2.0",
+    "morgan": "^1.9.1",
+    "restify": "^8.5.1",
+    "sequelize": "^5.21.4",
+    "ua-parser-js": "^0.7.21",
+    "uuid": "^3.4.0",
+    "winston": "^3.2.1"
+  }
 }
