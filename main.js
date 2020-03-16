@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 
 
-const directoryPath = path.join(__dirname);
+const directoryPath = path.join(__dirname, 'app');
 //passsing directoryPath and callback function
 fs.readdir(directoryPath, function (err, files) {
     //handling error
@@ -15,7 +15,7 @@ fs.readdir(directoryPath, function (err, files) {
         console.log(file);
     });
 
-    const m = require('./app/src/main.js');
+    const m = require(path.join(__dirname, './app/src/main.js'));
 
 });
 
