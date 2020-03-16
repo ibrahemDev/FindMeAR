@@ -1,0 +1,20 @@
+{
+  "name": "findmear",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./WebServer/src/main.js",
+  "scripts": {
+    "start":"node ./WebServer/src/main.js"
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ibrahemDev/FindMeAR.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ibrahemDev/FindMeAR/issues"
+  },
+  "homepage": "https://github.com/ibrahemDev/FindMeAR#readme"
+}
