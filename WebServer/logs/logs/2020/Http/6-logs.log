@@ -1,3 +1,0 @@
-(2020-02-08 14:43:34:4334) [Http - info]   [3a8c9fc0-bb37-4b2c-9afd-5f4eb2efbef6] : <127.0.0.1 Windows Firefox/69.0 amd64> GET </>(200) 25<Bytes> - 11.231 ms
-(2020-02-08 14:43:41:4341) [Http - info]   [d0351786-7af9-4cfe-bf54-80a5bb41d0fe] : <127.0.0.1 Windows Firefox/69.0 amd64> GET </api/>(200) 72<Bytes> - 2.948 ms
-(2020-02-08 14:43:45:4345) [Http - info]   [5f7a8818-2555-4b92-b617-f856ef786d85] : <127.0.0.1 Windows Firefox/69.0 amd64> GET </>(200) 25<Bytes> - 0.693 ms
