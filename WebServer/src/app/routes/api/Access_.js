@@ -215,7 +215,7 @@ class Access {
             if (user == null) {
                 res.send({
                     status: 'failed',
-                    code: 'FAILED_ROLE'
+                    code: 'FAILED_PHONE_NOT_FOUND'
                 })
             } else {
                 req.session.checkPhoneCode = {

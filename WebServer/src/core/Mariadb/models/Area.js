@@ -21,6 +21,12 @@ module.exports = (sequelize, type) => {
             allowNull: false,
             field: 'long'
         },
+
+        distance: {
+            type: type.INTEGER, // per hour
+            defaultValue: 100
+
+        },
         every: {
             type: type.INTEGER, // per hour
             allowNull: true

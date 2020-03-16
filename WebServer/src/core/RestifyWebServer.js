@@ -87,6 +87,9 @@ class RestifyWebServer {
         this.httpsServer = restify.createServer(serverOpt)
 
 
+
+
+
         this.httpsServer.use((req, res, next) => {
 
 
@@ -129,7 +132,7 @@ class RestifyWebServer {
         }
 
 
-        this.httpsServer.use(require('../app/middlewares/OptimizeUrl')({
+        /* this.httpsServer.use(require('../app/middlewares/OptimizeUrl')({
             type: 'add',
             statusCode: 301,
             skip: false,
@@ -138,7 +141,7 @@ class RestifyWebServer {
                 // log
             }
 
-        }))
+        })) */
 
 
         if (this.HttpToHttps.isRequired) {
@@ -226,7 +229,7 @@ class RestifyWebServer {
             resave: true,
             saveUninitialized: true,
             cookie: {
-                secure: true,
+                secure: false,
                 expires: new Date(Date.createDateTimeZone('Asia/Riyadh').getTime() + 1000 * 60 * 60 * 24 * 5)
             },
 

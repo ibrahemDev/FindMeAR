@@ -216,22 +216,22 @@ class Mariadb {
         // this section for ai
 
 
-        // for debug
-        await this.sequelize.query('drop PROCEDURE if exists aiEmergenciesFetchEmergenciesPerTimeRange', { raw: true })
-        await this.sequelize.query('drop PROCEDURE if exists aiEmergenciesCalculateDistance_BTWN_EmergsAndAreas', { raw: true })
-        await this.sequelize.query('drop PROCEDURE if exists aiEmergenciesCountEmergenciesPerRangeSelectArea', { raw: true })
-        await this.sequelize.query('drop PROCEDURE if exists aiEmergenciesCountEmergenciesPerRange', { raw: true })
-        await this.sequelize.query('drop PROCEDURE if exists generateEmergenciesData', { raw: true })
-        await this.sequelize.query('drop PROCEDURE if exists rndomLocation', { raw: true })
 
+        // for debug
+        await this.sequelize.query('drop PROCEDURE if exists ai', { raw: true })
+        await this.sequelize.query('drop PROCEDURE if exists aiGetBetween2Date', { raw: true })
         await this.sequelize.query('drop PROCEDURE if exists measureLatLon', { raw: true })
+        await this.sequelize.query('drop PROCEDURE if exists generateEmergenciesData', { raw: true })
+        await this.sequelize.query('drop PROCEDURE if exists pointInCircle', { raw: true })
+        await this.sequelize.query('drop PROCEDURE if exists session_get', { raw: true })
+        await this.sequelize.query('drop PROCEDURE if exists session_set', { raw: true })
         await this.sequelize.query('drop PROCEDURE if exists getBestParamedicForEmergencie', { raw: true })
         await this.sequelize.query('drop PROCEDURE if exists GetAllParamedicsOnlineAndResponeParamedicToEmergencie', { raw: true })
-        //
-
+        // events
         await this.sequelize.query('drop EVENT if exists responeAllParamedicsToAllEmergencies', { raw: true })
+        await this.sequelize.query('drop EVENT if exists remove_all_session_expired', { raw: true })
 
-        const sql = fs.readFileSync(path.join(__dirname, '../../data/sql/install_all.sql'), {
+        const sql = fs.readFileSync(path.join(__dirname, '../../data/sql/install.sql'), {
             encoding: 'utf8'
         })
         const sqlSplit = sql.split('/***********************************************************************************####****************************************************************************************/')

@@ -2,52 +2,18 @@
 
 
 
-// todo
-/**
- * employee_lat
-employee_long
- *
- *
- */
 
+const restify = require('restify')
 const contents = require('../../contents')
-
-
-// injured
-const InjuredAccess = require('./injured/InjuredAccess')
-const CreateEmergencie = require('./injured/CreateEmergencie')
-const EditEmergencie = require('./injured/EditEmergencie')
-const GetEmergencies = require('./injured/GetEmergencies')
-
-// admin
-const AdminAccess = require('./admin/AdminAccess')
-const GetAllUsers = require('./admin/GetAllUsers')
-const GetUserById = require('./admin/GetUserById')
-const AdminGetAllEmergencies = require('./admin/AdminGetAllEmergencies')
-const AdminGetEmergencieById = require('./admin/AdminGetEmergencieById')
-const AdminAddUserRole = require('./admin/AdminAddUserRole')
-const AdminDelUserRole = require('./admin/AdminDelUserRole')
-
-// paramedic
-
-const ParamedicGetEmergencieInfo = require('./paramedic/ParamedicGetEmergencieInfo')
-const ParamedicUpdateEmergencie = require('./paramedic/ParamedicUpdateEmergencie')
-
-// readEmergencieInformation
-// update stutse and location
-// checkEmergencie
-
-
-
-
-// const PhoneCode = require('./PhoneCode')
+const Permissions = require('../middlewares/Permissions')
 const Emergencie = require('./api/Emergencie_.js')
 const Access = require('./api/Access_')
 const PhoneCode = require('./api/PhoneCode_')
 const Account = require('./api/Account_')
-
-
-
+const MapAi = require('./api/MapAi_')
+const NotFound = require('./NotFound.js')
+const path = require('path')
+const fs = require('fs')
 
 
 
@@ -56,20 +22,53 @@ class Routes {
     constructor () {
 
         this.restify = SYS.restifyWebServer
+        console.log(path.join(SYS.ROOTPATH, './src/public'))
+        // path.join(__dirname, '../../'),
 
-
-        SYS.restifyWebServer.httpsServer.get('*', [
-            SYS.restifyWebServer.middlewares.OptimizeUrl({
-                type: 'add', // add slash last url
-                statusCode: 301, // this for redirect
-                skip: false, //
-                methods: 'get,head', // work with this methods
-                beforeRedirect: () => {
-                    // log
-                }
-            }),
-            this._pageNotFound.bind(this)
+        SYS.restifyWebServer.httpsServer.get('/public/*', [
+            restify.plugins.serveStaticFiles('./src/public'),
+            Permissions([
+                contents.PERMISSIONS.GUEST,
+                contents.PERMISSIONS.ADMIN
+            ], (req, res, next) => {
+                res.send({
+                    status: 'failed',
+                    message: 'Route Not Found',
+                    code: 'ROUTE_NOT_FOUND'
+                })
+            })
         ])
+
+        this.notFound = new NotFound()
+
+
+        this.mapAi = new MapAi()
+        SYS.restifyWebServer.httpsServer.get('/api/map/ai/get_all_areas/', [
+            ...this.mapAi.middlewares('get', [
+                contents.PERMISSIONS.ADMIN
+            ]),
+            this.mapAi.getAllAreas.bind(this.mapAi)
+        ])
+        SYS.restifyWebServer.httpsServer.post('/api/map/ai/sort_emergencies/', [
+            ...this.mapAi.middlewares('post', [
+                contents.PERMISSIONS.ADMIN
+            ]),
+            this.mapAi.sortEmergencies.bind(this.mapAi)
+        ])
+        SYS.restifyWebServer.httpsServer.post('/api/map/ai/calculate_hours/', [
+            ...this.mapAi.middlewares('post', [
+                contents.PERMISSIONS.ADMIN
+            ]),
+            this.mapAi.calculateHours.bind(this.mapAi)
+        ])
+        SYS.restifyWebServer.httpsServer.post('/api/map/ai/start_ai_training/', [
+            ...this.mapAi.middlewares('post', [
+                contents.PERMISSIONS.ADMIN
+            ]),
+            this.mapAi.startAiTraining.bind(this.mapAi)
+        ])
+
+
         this.emergencie = new Emergencie()
 
 
@@ -97,9 +96,21 @@ class Routes {
             this.emergencie.getAll.bind(this.emergencie)
         ])
 
+        SYS.restifyWebServer.httpsServer.get('/api/emergencies2date/', [
+            ...this.emergencie.middlewares('get', [
+                contents.PERMISSIONS.ADMIN
+            ]),
+            this.emergencie.getAll2Date.bind(this.emergencie)
+        ])
+
+
+
+
+
         SYS.restifyWebServer.httpsServer.post('/api/emergency/', [
             ...this.emergencie.middlewares('post', [
-                contents.PERMISSIONS.INJURED
+                contents.PERMISSIONS.INJURED,
+                contents.PERMISSIONS.ADMIN
             ]),
             this.emergencie.post.bind(this.emergencie)
         ])
@@ -187,34 +198,6 @@ class Routes {
 
 
 
-        // injured routes
-        this.injuredAccess = new InjuredAccess()
-        this.createEmergencie = new CreateEmergencie()
-        this.editEmergencie = new EditEmergencie()
-        this.getEmergencies = new GetEmergencies()
-
-        // admin routes
-        this.adminAccess = new AdminAccess()
-        this.getAllUsers = new GetAllUsers()
-        this.getUserById = new GetUserById()
-        this.adminGetAllEmergencies = new AdminGetAllEmergencies()
-        this.adminGetEmergencieById = new AdminGetEmergencieById()
-        this.adminAddUserRole = new AdminAddUserRole()
-        this.adminDelUserRole = new AdminDelUserRole()
-        // .....
-        this.paramedicGetEmergencieInfo = new ParamedicGetEmergencieInfo()
-        this.paramedicUpdateEmergencie = new ParamedicUpdateEmergencie()
-
-
-        SYS.restifyWebServer.httpsServer.put('/api/paramedic/emergencie/:id/', [
-            ...this.paramedicUpdateEmergencie.middlewares,
-            this.paramedicUpdateEmergencie.put.bind(this.paramedicUpdateEmergencie)
-        ])
-
-
-
-
-
     }
 
     _apiNotFound (req, res, next) {
@@ -227,22 +210,6 @@ class Routes {
             message: 'Route Not Found',
             code: 'ROUTE_NOT_FOUND'
         })
-        // next()
-    }
-
-
-
-
-    _pageNotFound (req, res, next) {
-        return this.pageNotFound(req, res, next)
-    }
-
-    pageNotFound (req, res, next) {
-        res.header('Content-Type', 'text/html')
-        res.end('<h1>page Not Found</h1>')
-        // res.send('<h1>page Not Found</h1>')
-
-
         // next()
     }
 }

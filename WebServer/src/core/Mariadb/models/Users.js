@@ -59,7 +59,8 @@ module.exports = (sequelize, type) => {
         },
         deletedAt: {
             type: type.DATE,
-            defaultValue: '0000-00-00 00:00:00',
+            allowNull: true,
+            defaultValue: null,
             field: 'deletedAt'
         }
 

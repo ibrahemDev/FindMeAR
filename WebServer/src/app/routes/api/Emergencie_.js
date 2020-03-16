@@ -2,6 +2,8 @@ const contents = require('../../../contents')
 const Permissions = require('../../middlewares/Permissions')
 const restify = require('restify')
 const Joi = require('@hapi/joi')
+const { Op } = require("sequelize");
+
 
 
 class Emergencie {
@@ -119,13 +121,20 @@ class Emergencie {
     // INJURED only
     async post (req, res, next) {
 
-        const JoiForm = Joi.object({
+        const isParamedic = this.isPermission(contents.PERMISSIONS.PARAMEDIC, req)
+        const isAdmin = this.isPermission(contents.PERMISSIONS.ADMIN, req)
+
+        const s = {
             title: Joi.string().empty().min(0).max(255).required().label('Title'),
             description: Joi.string().empty().min(0).max(1000).required().label('Description'),
             lat: Joi.number().required().label('Lat'),
             long: Joi.number().required().label('Long'),
             is_static: Joi.boolean().required().label('is Static')
-        }).label('Form')
+        }
+        if (isAdmin) {
+            s['createdAt'] = Joi.string().default(null).label('createdAt')
+        }
+        const JoiForm = Joi.object(s).label('Form')
 
 
 
@@ -140,7 +149,7 @@ class Emergencie {
             })
             return next()
         }
-
+        console.log(new Date(validateJoiParams.value.createdAt).toISOString())
         const Emergency = await SYS.mariadb.models.get('Emergency').create({
             user_id: req.session.db.user_id,
             employee_id: null,
@@ -150,7 +159,8 @@ class Emergencie {
             long: validateJoiParams.value.long,
             is_static: validateJoiParams.value.is_static,
             status: 1, // 1 == live , 2 == close
-            status_msg: 'no respone'
+            status_msg: 'no respone',
+            createdAt: (isAdmin) ? new Date(validateJoiParams.value.createdAt).toISOString() : null
         })
 
         res.send({
@@ -630,7 +640,55 @@ class Emergencie {
 
     }
 
+    async getAll2Date (req, res, next) {
 
+
+
+
+
+
+
+
+        const joiQuery = Joi.object({
+            date1: Joi.string().label('date1'),
+            date2: Joi.string().label('date2')
+        }).label('queries')
+
+        const validateJoiQuery = this.joiCheck(joiQuery, req.query)
+        if (validateJoiQuery.errors != null) {
+            res.send({
+                status: 'failed',
+                error: {
+                    query: validateJoiQuery.errors
+                }
+            })
+            return next()
+        }
+
+        const dbObj = {
+            where: {
+
+                created_at: {
+                    [Op.between]: [validateJoiQuery.value.date1, validateJoiQuery.value.date2]
+                }
+            }
+        }
+
+
+
+        const emergencies = await SYS.mariadb.models.get('Emergency').findAll(dbObj)
+
+
+
+
+        res.send({
+            status: 'ok',
+            emergencies: emergencies
+
+        })
+
+
+    }
 
 
 }
