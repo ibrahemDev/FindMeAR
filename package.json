@@ -2,9 +2,9 @@
   "name": "findmear",
   "version": "1.0.0",
   "description": "",
-  "main": "./app/app/src/main.js",
+  "main": "./app/src/main.js",
   "scripts": {
-    "start":"node ./app/app/src/main.js"
+    "start":"node ./app/src/main.js"
 
   },
   "repository": {
