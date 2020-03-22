@@ -13,44 +13,44 @@ BEGIN
 	DECLARE now_date1, now_date2 DATETIME;
 	DECLARE sum, count INT;
 
-    
-    
-    
+
+
+
     set now_date1 = in_date1;
 	set count = 0;
 	set sum = 0;
-            
+
     WHILE now_date1 < in_date2 DO
 		set now_date2 = DATE_ADD(now_date1, INTERVAL in_houres second);
 			#now_date1 , now_date2
-			
+
             call aiGetBetween2Date(now_date1, now_date2, in_lat, in_lon, in_distance, @out_count);
             set count = count + 1;
             set sum = sum + @out_count;
 			#select count,sum;
-        
+
         set now_date1 = now_date2;
     END WHILE;
-    
-    
-    
+
+
+
     select sum/count as `count`;
-    
-    
+
+
 END;
 
 /***********************************************************************************####****************************************************************************************/
 
 CREATE  PROCEDURE `aiGetBetween2Date`(IN in_date1 DATETIME, IN in_date2 DATETIME, IN in_lat DOUBLE, IN in_lon DOUBLE, IN in_distance INT, OUT out_count INT)
 BEGIN
-	
+
     DECLARE done INT DEFAULT FALSE;
 	DECLARE count INT;
 	DECLARE f_lat,f_lon double;
     DECLARE f_created_at DATETIME;
     DECLARE emergencies_cur CURSOR FOR select `lat`,`long`,`created_at` from `emergencies` where `created_at` > in_date1  AND `created_at` < in_date2 AND `is_static` is false;
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
-    
+
 
 	set count = 0;
 	OPEN emergencies_cur;
@@ -59,11 +59,11 @@ BEGIN
 			IF done THEN
 				LEAVE loop_label;
 			END IF;
-			
+
             call measureLatLon(f_lat, f_lon, in_lat,in_lon, @Meters);
             if @Meters < in_distance then
 				set count = count +1;
-                
+
             end if;
         END LOOP;
 	CLOSE emergencies_cur;
@@ -116,37 +116,37 @@ CREATE  PROCEDURE `generateEmergenciesData`(IN in_length INT, IN in_lat double, 
 CREATE  PROCEDURE `pointInCircle`(IN in_lat double, IN in_lon double, IN in_distance double, OUT out_lat double, OUT out_lon double) BEGIN
 		declare pi,pi2,pi3,rnd1,rnd2,distance ,newLat,newLng,sinLat,cosLat,lat,lng,bearing,theta,sinBearing,cosBearing,sinTheta,cosTheta double;
 		declare EARTH_RADIUS int;
-        
-        
+
+
         set pi = PI();
         set pi2 = pi+pi;
         set pi3 = pi2+pi;
-        
+
         set rnd1 = RAND();
         set rnd2 = RAND();
         set EARTH_RADIUS = 6371000;
         set distance = SQRT(rnd1) * in_distance;
-        
+
         set lat = in_lat * (pi/180);
 		set lng = in_lon * (pi/180);
 		set sinLat = 	SIN(lat);
 		set cosLat = 	COS(lng);
-        
+
         set bearing = rnd2 * pi2;
 	set theta = distance/EARTH_RADIUS;
   set sinBearing = SIN(bearing);
 	set cosBearing = 	COS(bearing);
   set sinTheta =SIN(theta);
 	set cosTheta = 	COS(theta);
-        
-		
-            
+
+
+
         set newLat = ASIN(sinLat*cosTheta+cosLat*sinTheta*cosBearing);
 	set newLng = lng +ATAN2( sinBearing*sinTheta*cosLat, cosTheta-sinLat*SIN(newLat ));
 	set newLng = ((newLng+(pi3))%(pi2))-pi;
-        
-        
-        
+
+
+
 
         set out_lat = newLat * (180/pi);
 		set out_lon = newLng * (180/pi);
@@ -164,10 +164,10 @@ BEGIN
     DECLARE g_createdAt datetime;
     DECLARE g_user_id int unsigned;
     DECLARE g_role_id int;
-	
-    
-    
-    
+
+
+
+
     declare last_activity_for_all_session datetime;
     DECLARE is_session_exists int;
     #DECLARE g_now datetime;
@@ -482,7 +482,7 @@ BEGIN
 			END IF;
 
 			CALL getBestParamedicForEmergencie(_lat,_long, @out_paramedic_id);
-            UPDATE `emergencies` SET `employee_id` = @out_paramedic_id WHERE id = _emergencie_id;
+            UPDATE `emergencies` SET `employee_id` = @out_paramedic_id, `status` = 2 WHERE id = _emergencie_id;
 
         END LOOP;
     CLOSE emergencies_cur;

@@ -73,17 +73,27 @@ const core = require('./core/Core')
 
 
 
+/**
+ *
+ *
+ *
+ *
+ *  catch any error and with out close server.
+ */
+process.on('uncaughtException', function (/* err */) {
 
-process.on('uncaughtException', function (err) {
-    console.log(err)
-    // console.log(typeof err)
-    // console.log( err.stack)
-    // console.log(err.name)
-    // console.log( err.message)
-    //  console.log( err.constructor)
-    // console.log('Caught exception: ' + err)
 })
 
+
+
+
+/**
+ *
+ *
+ *
+ * configuration here
+ *
+ */
 core({ // global config
     isDebug: true,
     TimeZone: 'Asia/Riyadh',
@@ -96,7 +106,7 @@ core({ // global config
         host: '127.0.0.1',
         port: 3000,
         trustProxy: false,
-        httpVersion: '2.0', // http = 1.0 https=1.1 https/2 = 2.0
+        httpVersion: '1.0', // http = 1.0 https=1.1 https/2 = 2.0
         ssl: { // if using https or https/2
 
             key: fs.readFileSync(path.join(__dirname, './data/ssl/localhost.privkey.pem'), {
@@ -119,12 +129,12 @@ core({ // global config
     },
     logger: {
         isRequired: true,
-        dir: './logs/',
+        dir: './src/logs/',
         newFileEvery: 5 // 5 = friday
     },
     Mariadb: {
         db_host: '127.0.0.1',
-        db_name: 'find_me_ar', // + Math.floor(Math.random() * 100000000000000), // 'find_me_ar', //
+        db_name: 'find_me_arr',
         db_user: 'root',
         db_pass: '',
         db_pool: {

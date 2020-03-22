@@ -124,6 +124,7 @@ class Emergencie {
         const isParamedic = this.isPermission(contents.PERMISSIONS.PARAMEDIC, req)
         const isAdmin = this.isPermission(contents.PERMISSIONS.ADMIN, req)
 
+
         const s = {
             title: Joi.string().empty().min(0).max(255).required().label('Title'),
             description: Joi.string().empty().min(0).max(1000).required().label('Description'),
@@ -137,7 +138,7 @@ class Emergencie {
         const JoiForm = Joi.object(s).label('Form')
 
 
-
+        console.log(req.body.fields)
 
         const validateJoiParams = this.joiCheck(JoiForm, req.body.fields)
         if (validateJoiParams.errors != null) {
@@ -149,7 +150,12 @@ class Emergencie {
             })
             return next()
         }
-        console.log(new Date(validateJoiParams.value.createdAt).toISOString())
+        /* if (/^(?:[^%]|%[0-9A-Fa-f]{2})+$/.test(validateJoiParams.value.description)) {
+            validateJoiParams.value.description = decodeURI(validateJoiParams.value.description)
+        }
+        if (/^(?:[^%]|%[0-9A-Fa-f]{2})+$/.test(validateJoiParams.value.title)) {
+            validateJoiParams.value.title = decodeURI(validateJoiParams.value.title)
+        } */
         const Emergency = await SYS.mariadb.models.get('Emergency').create({
             user_id: req.session.db.user_id,
             employee_id: null,
@@ -160,8 +166,10 @@ class Emergencie {
             is_static: validateJoiParams.value.is_static,
             status: 1, // 1 == live , 2 == close
             status_msg: 'no respone',
-            createdAt: (isAdmin) ? new Date(validateJoiParams.value.createdAt).toISOString() : null
+            createdAt: (isAdmin) ? new Date(validateJoiParams.value.createdAt).toISOString() : Date.createDateTimeZone('Asia/Riyadh').toISOString()
         })
+
+
 
         res.send({
             status: 'ok',

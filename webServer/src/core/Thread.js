@@ -54,20 +54,20 @@ class Thread {
 
             // to receive messages from worker process
             this.workers[i].on('message', function (message) {
-                console.log(message)
+                //console.log(message)
             })
         }
         cluster.on('online', function (worker) {
-            console.log('Worker ' + worker.process.pid + ' is listening')
+           // console.log('Worker ' + worker.process.pid + ' is listening')
         })
         cluster.on('exit', function (worker, code, signal) {
-            console.log('Worker ' + worker.process.pid + ' died with code: ' + code + ', and signal: ' + signal)
-            console.log('Starting a new worker')
+            //console.log('Worker ' + worker.process.pid + ' died with code: ' + code + ', and signal: ' + signal)
+            //console.log('Starting a new worker')
             // cluster.fork();
             workers.push(cluster.fork())
             // to receive messages from worker process
             workers[workers.length - 1].on('message', function (message) {
-                console.log(message)
+                //console.log(message)
             })
         })
 

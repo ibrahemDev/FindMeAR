@@ -22,9 +22,10 @@ class Routes {
     constructor () {
 
         this.restify = SYS.restifyWebServer
-        console.log(path.join(SYS.ROOTPATH, './src/public'))
-        // path.join(__dirname, '../../'),
 
+
+
+        // public folder
         SYS.restifyWebServer.httpsServer.get('/public/*', [
             restify.plugins.serveStaticFiles('./src/public'),
             Permissions([
@@ -39,9 +40,15 @@ class Routes {
             })
         ])
 
+
+
+
         this.notFound = new NotFound()
 
 
+
+
+        // AI routes
         this.mapAi = new MapAi()
         SYS.restifyWebServer.httpsServer.get('/api/map/ai/get_all_areas/', [
             ...this.mapAi.middlewares('get', [
@@ -69,10 +76,11 @@ class Routes {
         ])
 
 
+
+
+
+        // emergencies routes
         this.emergencie = new Emergencie()
-
-
-        // https://127.0.0.1:3000/api/emergencie/1/
         SYS.restifyWebServer.httpsServer.get('/api/emergency/:id/', [
             ...this.emergencie.middlewares('get', [
                 contents.PERMISSIONS.ADMIN,
@@ -102,11 +110,6 @@ class Routes {
             ]),
             this.emergencie.getAll2Date.bind(this.emergencie)
         ])
-
-
-
-
-
         SYS.restifyWebServer.httpsServer.post('/api/emergency/', [
             ...this.emergencie.middlewares('post', [
                 contents.PERMISSIONS.INJURED,
@@ -114,7 +117,6 @@ class Routes {
             ]),
             this.emergencie.post.bind(this.emergencie)
         ])
-
         SYS.restifyWebServer.httpsServer.put('/api/emergency/:id/', [
             ...this.emergencie.middlewares('post', [
                 contents.PERMISSIONS.INJURED,
@@ -124,11 +126,9 @@ class Routes {
         ])
 
 
+
+        // login routes
         this.access = new Access()
-
-
-
-
         SYS.restifyWebServer.httpsServer.post('/api/access/', [
             ...this.access.middlewares('post', [
                 contents.PERMISSIONS.GUEST
@@ -155,11 +155,10 @@ class Routes {
             ]),
             this.phoneCode.post.bind(this.phoneCode)
         ])
-
-
         SYS.restifyWebServer.httpsServer.get('/api/phone_code/', this.phoneCode.get([
             contents.PERMISSIONS.GUEST
         ]))
+
 
 
         this.account = new Account()
@@ -172,7 +171,6 @@ class Routes {
             ]),
             this.account.get.bind(this.account)
         ])
-
         SYS.restifyWebServer.httpsServer.put('/api/account/', [
             ...this.account.middlewares('put', [
                 contents.PERMISSIONS.INJURED,
@@ -184,6 +182,7 @@ class Routes {
         ])
 
 
+        // api notfound here
         SYS.restifyWebServer.httpsServer.get('/api/*', SYS.restifyWebServer.middlewares.OptimizeUrl({
             type: 'add', // add slash last url
             statusCode: 301, // this for redirect

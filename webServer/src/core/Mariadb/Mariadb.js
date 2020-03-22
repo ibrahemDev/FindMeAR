@@ -15,9 +15,6 @@ const Area = require('./models/Area')
 const PhoneCode = require('./models/PhoneCode')
 
 
-// const SessionOptions = require('./models/SessionOptions')
-// const PermissionRole = require('./models/permission_role')
-// const Permissions = require('./models/permissions')
 
 
 
@@ -54,7 +51,7 @@ class Mariadb {
         this.isSequelizeSync = false
 
 
-        console.log(this)
+        // console.log(this)
 
 
     }
@@ -150,7 +147,7 @@ class Mariadb {
                 setTimeout(() => {
                     if (!this.isDatabaseCreated && !this.isSequelizeSync) {
                         stop = true
-                        console.log('ERROR CONNECT TO DATABASE')
+                        // console.log('ERROR CONNECT TO DATABASE')
                         resolve()
                     }
                 }, timeOut)
@@ -163,8 +160,8 @@ class Mariadb {
 
                 if (conn && conn.isValid()) {
                     if (!this.isDatabaseCreated) {
-                        console.log('Createing Database if not Exists')
-                        conn.query('CREATE DATABASE IF NOT EXISTS ' + this.db_name, (err, rows) => {
+                        // console.log('Createing Database if not Exists')
+                        conn.query('CREATE DATABASE IF NOT EXISTS ' + this.db_name + " DEFAULT CHARACTER SET = 'utf8' DEFAULT COLLATE 'utf8_general_ci'", (err, rows) => {
                             if (err) {
 
 
@@ -173,17 +170,17 @@ class Mariadb {
                                     initDatabaseAndTabels(5000)
                                 }, time)
                             } else {
-                                console.log('Successful create database')
+                                // console.log('Successful create database')
                                 this.isDatabaseCreated = true
                                 initDatabaseAndTabels(5000)
                             }
                         })
                     } else if (!this.isSequelizeSync) {
-                        console.log('Createing tables & relations')
+                        //console.log('Createing tables & relations')
                         this.sequelize.sync({ force: false })
-                        console.log('Successful create tables & relations')
+                       /// console.log('Successful create tables & relations')
                         this.isSequelizeSync = true
-                        console.log(1111111111111111111111111)
+                        // console.log(1111111111111111111111111)
                         resolve()
 
                     }
@@ -196,7 +193,6 @@ class Mariadb {
                                 initDatabaseAndTabels(5000)
                             }, time)
                         else {
-                            console.log('Successful Connection')
                             initDatabaseAndTabels(5000)
                         }
 
@@ -204,7 +200,7 @@ class Mariadb {
 
                 }
             }
-            console.log('Database Start Connecting')
+            // console.log('Database Start Connecting')
             initDatabaseAndTabels(5000)
         })
     }
@@ -234,6 +230,8 @@ class Mariadb {
         const sql = fs.readFileSync(path.join(__dirname, '../../data/sql/install.sql'), {
             encoding: 'utf8'
         })
+
+        // i cant exec muiltple Procedures i splet and exec in loop
         const sqlSplit = sql.split('/***********************************************************************************####****************************************************************************************/')
         const listFeedBack = []
         for (var i = 1; i < sqlSplit.length - 1; i++) {

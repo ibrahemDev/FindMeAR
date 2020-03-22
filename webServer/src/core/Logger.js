@@ -2,6 +2,11 @@ const { createLogger, transports, format } = require('winston')
 const { combine, timestamp, printf } = format
 const path = require('path')
 
+
+
+// complex code here :) :/ :(
+
+
 class Logger {
     constructor (options) {
 

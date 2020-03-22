@@ -88,7 +88,15 @@ class RestifyWebServer {
 
 
 
+        this.httpsServer.use(
+  function crossOrigin(req,res,next){
+    res.header("Access-Control-Allow-Origin", "http://127.0.0.1:19006");
+    res.header("Access-Control-Allow-Headers", "Accept");
+    res.header("Access-Control-Allow-Credentials", "true");
 
+    return next();
+  }
+);
 
         this.httpsServer.use((req, res, next) => {
 

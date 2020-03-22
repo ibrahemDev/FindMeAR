@@ -104,7 +104,7 @@ class Access {
     async post (req, res, next) {
 
         const JoiForm = Joi.object({
-            device_id: Joi.string().alphanum().min(30).max(255).label('device id'),
+            device_id: Joi.string().min(25).max(255).label('device id'),
             phone_number: Joi.string().min(9).max(9).pattern(new RegExp('^5[0-9]{8}$')).label('Phone number'),
             type: Joi.string().valid('injured', 'paramedic', 'admin').label('type')
 
