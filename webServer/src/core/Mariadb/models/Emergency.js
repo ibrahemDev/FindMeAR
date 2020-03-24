@@ -53,6 +53,7 @@ module.exports = (sequelize, type) => {
 
             type: type.DECIMAL,
             allowNull: false,
+            defaultValue: 1,
             field: 'status'
         },
         status_msg: {

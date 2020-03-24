@@ -445,8 +445,8 @@ BEGIN
 		IF done THEN
 			LEAVE loop_label;
 		END IF;
-        select count(*) into is_paramedic_with_emergencie from `emergencies` where `employee_id` = paramedic_id AND `status` = 1;
-        if is_paramedic_with_emergencie is false then
+        select count(*) into is_paramedic_with_emergencie from `emergencies` where `employee_id` = paramedic_id AND `status` = 2;
+        if is_paramedic_with_emergencie <1 then
 			CALL measureLatLon(emergencieLat, emergencieLONG, paramedicLat, paramedicLong,@_legth);
 		   if @_legth is not null then
 				if @_legth < Olegth OR Olegth is null  then
@@ -475,10 +475,10 @@ BEGIN
 
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
 	OPEN emergencies_cur;
-		emergencies_loop_label: LOOP
+		loop_label:  LOOP
 			FETCH emergencies_cur INTO _emergencie_id, _lat, _long;
 			IF done THEN
-				LEAVE emergencies_loop_label;
+				LEAVE loop_label;
 			END IF;
 
 			CALL getBestParamedicForEmergencie(_lat,_long, @out_paramedic_id);
